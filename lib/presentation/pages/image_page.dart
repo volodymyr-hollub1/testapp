@@ -14,6 +14,9 @@ class ImagePage extends StatelessWidget {
       ),
       body: Image.network(
         dto!.path ?? '',
+        loadingBuilder: (context, child, loadingProgress) {
+          return const Center(child: CircularProgressIndicator());
+        },
         errorBuilder: (context, error, stackTrace) {
           return const Center(
             child: Text(
