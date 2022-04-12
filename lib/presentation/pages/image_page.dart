@@ -12,8 +12,17 @@ class ImagePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(dto!.name ?? 'Photo'),
       ),
-      body:
-          dto!.path != null ? Image.network(dto!.path ?? '') : const SizedBox(),
+      body: Image.network(
+        dto!.path ?? '',
+        errorBuilder: (context, error, stackTrace) {
+          return const Center(
+            child: Text(
+              'Not found',
+              style: TextStyle(fontSize: 33, color: Colors.black87),
+            ),
+          );
+        },
+      ),
     );
   }
 }

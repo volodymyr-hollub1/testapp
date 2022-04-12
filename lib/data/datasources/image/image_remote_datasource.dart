@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:testapp/core/fails/exception.dart';
 import 'dart:convert';
@@ -26,14 +28,18 @@ class ImageRemoteDatasourceImpl implements ImageRemoteDatasource {
     };
     final uri = Uri.https(Constants.baseUrlDomain, url, parameters);
 
-    final response = await client.get(uri);
+    try {
+      final response = await client.get(uri);
 
-    if (response.statusCode == 200) {
-      final responseBody = json.decode(response.body);
-      return (responseBody as List)
-          .map((item) => ImageModel.fromJson(item))
-          .toList();
-    } else {
+      if (response.statusCode == 200) {
+        final responseBody = json.decode(response.body);
+        return (responseBody as List)
+            .map((item) => ImageModel.fromJson(item))
+            .toList();
+      } else {
+        throw ServerException();
+      }
+    } on SocketException {
       throw ServerException();
     }
   }

@@ -40,9 +40,16 @@ class ImageList extends StatelessWidget {
         } else if (state is ImageStateLoaded) {
           images = state.loadedImages;
         } else if (state is ImageStateError) {
-          return Text(
-            state.message,
-            style: const TextStyle(color: Colors.white, fontSize: 25),
+          return GestureDetector(
+            onTap: () {
+              imageCubit.getImages();
+            },
+            child: Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(color: Colors.black87, fontSize: 40.0),
+              ),
+            ),
           );
         }
 

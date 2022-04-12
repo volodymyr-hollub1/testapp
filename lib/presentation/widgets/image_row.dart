@@ -27,23 +27,27 @@ class ImageRow extends StatelessWidget {
             child: SizedBox(
               height: 100.0,
               width: 100.0,
-              child: Image.network(
-                path ?? '',
-                fit: BoxFit.fill,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.black87,
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                },
-              ),
+              child: path != null
+                  ? Image.network(
+                      path!,
+                      fit: BoxFit.fill,
+                      errorBuilder: (context, exception, stackTrace) {
+                        return const Icon(Icons.photo);
+                      },
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.black87,
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      },
+                    )
+                  : Image.asset('/assets/images/default.png'),
             ),
           ),
         const SizedBox(
